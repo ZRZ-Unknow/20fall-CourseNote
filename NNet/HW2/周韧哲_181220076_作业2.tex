@@ -1,0 +1,106 @@
+%!TEX program = xelatex
+\documentclass[a4paper,UTF8]{article}
+\usepackage{ctex}
+\usepackage[margin=1.25in]{geometry}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{epsfig}
+\usepackage{color}
+\usepackage{mdframed}
+\usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage{float}
+\newmdtheoremenv{thm-box}{Theorem}
+\newmdtheoremenv{prop-box}{Proposition}
+\newmdtheoremenv{def-box}{定义}
+
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+	numbers=left,
+	numberstyle= \tiny,
+	keywordstyle= \color{ blue!70},
+	commentstyle= \color{red!50!green!50!blue!50},
+	frame=shadowbox, % 阴影效果
+	rulesepcolor= \color{ red!20!green!20!blue!20} ,
+	escapeinside=``, % 英文分号中可写入中文
+	xleftmargin=2em,xrightmargin=2em, aboveskip=1em,
+	framexleftmargin=2em
+}
+
+\usepackage{booktabs}
+
+\setlength{\evensidemargin}{.25in}
+\setlength{\textwidth}{6in}
+\setlength{\topmargin}{-0.5in}
+\setlength{\topmargin}{-0.5in}
+% \setlength{\textheight}{9.5in}
+%%%%%%%%%%%%%%%%%%此处用于设置页眉页脚%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{layout}
+\footskip = 12pt
+\pagestyle{fancy}                    % 设置页眉
+\lhead{2020年秋季}
+\chead{神经网络}
+% \rhead{第\thepage/\pageref{LastPage}页}
+\rhead{作业一}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{1pt}  			%页眉线宽，设为0可以去页眉线
+\setlength{\skip\footins}{0.5cm}    			%脚注与正文的距离
+\renewcommand{\footrulewidth}{0pt}  			%页脚线宽，设为0可以去页脚线
+
+\makeatletter 									%设置双线页眉
+\def\headrule{{\if@fancyplain\let\headrulewidth\plainheadrulewidth\fi%
+\hrule\@height 1.0pt \@width\headwidth\vskip1pt	%上面线为1pt粗
+\hrule\@height 0.5pt\@width\headwidth  			%下面0.5pt粗
+\vskip-2\headrulewidth\vskip-1pt}      			%两条线的距离1pt
+ \vspace{6mm}}     								%双线与下面正文之间的垂直间距
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\numberwithin{equation}{section}
+%\usepackage[thmmarks, amsmath, thref]{ntheorem}
+\newtheorem{theorem}{Theorem}
+\newtheorem*{definition}{Definition}
+\newtheorem*{solution}{Solution}
+\newtheorem*{prove}{Proof}
+\newcommand{\indep}{\rotatebox[origin=c]{90}{$\models$}}
+
+\usepackage{multirow}
+
+%--
+
+%--
+\begin{document}
+\title{神经网络\\
+作业二}
+\author{181220076, 周韧哲, zhourz@smail.nju.edu.cn}
+\maketitle
+
+\section*{Problem 1}
+设计一个多输入单输出的神经元用于进行股票价格的预测，通过股票的历史数据来训练该神经元,希望预测结果尽量接近真实值。
+\begin{solution}.\\
+	设股票价格与前$n$天有关，则神经元可以设计为$$f(\mathbf{x})=w_1x_1+w_2x_2+\cdots+w_nx_n+b=\mathbf{w}^T\mathbf{x}+b$$
+	令$\mathbf{X}=(\mathbf{x};1),\mathbf{W}=(\mathbf{w};b)$，则神经元可表示为$f(\mathbf{X})=\mathbf{W}^T\mathbf{X}$。按照课件$101$页所示，令$n=4$，使用所给数据训练该网络，学习率$\alpha=0.001$，误差使用均方误差，迭代次数为$1000$次，得到训练后的均方误差$0.9847$，权重$[w_1,w_2,w_3,w_4,b]$为
+	$$[-14.17614168,\quad-4.345092,\quad4.46244507,\quad14.29241046,\quad9.67450308]$$
+	详见代码文件。
+\end{solution}
+
+\section*{Problem 2}
+“损坏的”LED灯问题。考虑一个由7个LED灯组成的数字显示器,每个LED灯的亮暗状态分别标记
+为“+1”和“−1”,这7个LED灯的状态共同组成一个向量$x$。显示器上显示的数字标记为s。例如当s=2时，第j个LED灯（
+j=1,...,7）显示为$c_j(2)$（即正确显示）的概率为f，或者翻转显示（即错误显示）的概率为f。假定显示的数字只为2或3,当给定一个显示状态x时，显示数字为2或3的概率为多少？例如$P(s=2|x)$可以写成如下形式$P(s=2|x)=\frac{1}{1+exp(-w^Tx+b)}$。这里f=0.1。
+\begin{solution}.\\
+	已知$P(x|s)=(1-f)^7$,为了求$P(s|x)$，可以使用贝叶斯定理
+	$$P(s|x)=\frac{P(x|s)P(s)}{P(x)}$$
+	我们并不知道$P(s)$，无法求解。但是，我们可以观察每一次事件，如果将每种概率事件作为训练数据来训练一个神经网络，从而预测显示数字s为2或者3的概率，即$$P(s=2|x)=\frac{1}{1+exp(-w^Tx+b)}$$
+	训练完后我们就可以得到参数$w,b$，从而可以得到$P(s=2|x)$与$P(s=3|x)$。
+\end{solution}
+\end{document}
