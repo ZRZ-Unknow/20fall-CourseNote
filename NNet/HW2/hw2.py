@@ -20,18 +20,26 @@ class NN():
     def params(self):
         return self.w
 
-
+def get_data(N):
+    x,y = [], []
+    for i in range(0,len(share_prices)-N):
+        x.append([share_prices[j] for j in range(i,i+N)]+[1])
+        y.append(share_prices[i+N])
+    return np.array(x),np.array(y)
+    '''
 def get_data(N):
     x,y = [], []
     for i in range(1,len(share_prices)-N+1):
         x.append([j for j in range(i,i+N)]+[1])
         y.append(share_prices[i+N-1])
-    return np.array(x),np.array(y)
+    return np.array(x),np.array(y)'''
 
 def main_loop(N):
     x,y = get_data(N)
+    print(x,y)
     nn = NN(N+1)
-    nn.fit(x,y,0.001,1e3)
+    nn.fit(x,y,0.0001,1e4)
+    print(x.shape,y.shape)
     w = nn.params()
     pred_y = x.dot(w)
     print("MSEloss:",np.sum((pred_y-y)**2)/y.shape[0])
