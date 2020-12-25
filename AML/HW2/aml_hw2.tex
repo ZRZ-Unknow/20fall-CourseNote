@@ -1,0 +1,271 @@
+\documentclass[a4paper,UTF8]{article}
+\usepackage{ctex}
+\usepackage[margin=1.25in]{geometry}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{pgfplots}
+\usepackage{epsfig}
+\usepackage{color}
+\usepackage{tcolorbox}
+\usepackage{mdframed}
+\usepackage{lipsum}
+\usepackage{natbib}
+\usepackage{url}
+\newmdtheoremenv{thm-box}{myThm}
+\newmdtheoremenv{prop-box}{Proposition}
+\newmdtheoremenv{def-box}{定义}
+
+\setlength{\evensidemargin}{.25in}
+\setlength{\textwidth}{6in}
+\setlength{\topmargin}{-0.5in}
+\setlength{\topmargin}{-0.5in}
+% \setlength{\textheight}{9.5in}
+%%%%%%%%%%%%%%%%%%此处用于设置页眉页脚%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}                                
+\usepackage{lastpage}                                   
+\usepackage{layout}                                     
+\newtheorem*{solution}{Solution}
+
+\footskip = 10pt 
+\pagestyle{fancy}                    % 设置页眉                 
+\lhead{2020年秋季}                    
+\chead{高级机器学习}                                                
+% \rhead{第\thepage/\pageref{LastPage}页} 
+\rhead{作业二}                                                                                               
+\cfoot{\thepage}                                                
+\renewcommand{\headrulewidth}{1pt}  			%页眉线宽，设为0可以去页眉线
+\setlength{\skip\footins}{0.5cm}    			%脚注与正文的距离           
+\renewcommand{\footrulewidth}{0pt}  			%页脚线宽，设为0可以去页脚线
+
+\makeatletter 									%设置双线页眉                                        
+\def\headrule{{\if@fancyplain\let\headrulewidth\plainheadrulewidth\fi%
+\hrule\@height 1.0pt \@width\headwidth\vskip1pt	%上面线为1pt粗  
+\hrule\@height 0.5pt\@width\headwidth  			%下面0.5pt粗            
+\vskip-2\headrulewidth\vskip-1pt}      			%两条线的距离1pt        
+ \vspace{6mm}}     								%双线与下面正文之间的垂直间距              
+\makeatother  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\numberwithin{equation}{section}
+%\usepackage[thmmarks, amsmath, thref]{ntheorem}
+\newtheorem{myThm}{myThm}
+\newtheorem*{myDef}{Definition}
+\newtheorem*{mySol}{Solution}
+\newtheorem*{myProof}{Proof}
+\newtheorem*{myRemark}{备注}
+
+\newcommand{\indep}{\rotatebox[origin=c]{90}{$\models$}}
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
+
+\usepackage{multirow}
+
+%--
+
+%--
+\begin{document}
+\title{高级机器学习\\
+作业二}
+\author{周韧哲\, 181220076} 
+\maketitle
+%%%%%%%% 注意: 使用XeLatex 编译可能会报错，请使用 pdfLaTex 编译 %%%%%%%
+
+\section*{学术诚信}
+
+本课程非常重视学术诚信规范，助教老师和助教同学将不遗余力地维护作业中的学术诚信规范的建立。希望所有选课学生能够对此予以重视。\footnote{参考尹一通老师\href{http://tcs.nju.edu.cn/wiki/}{高级算法课程}中对学术诚信的说明。}
+
+\begin{tcolorbox}
+	\begin{enumerate}
+		\item[(1)] 允许同学之间的相互讨论，但是{\color{red}\textbf{署你名字的工作必须由你完成}}，不允许直接照搬任何已有的材料，必须独立完成作业的书写过程;
+		\item[(2)] 在完成作业过程中，对他人工作（出版物、互联网资料）中文本的直接照搬（包括原文的直接复制粘贴及语句的简单修改等）都将视为剽窃，剽窃者成绩将被取消。{\color{red}\textbf{对于完成作业中有关键作用的公开资料，应予以明显引用}}；
+		\item[(3)] 如果发现作业之间高度相似将被判定为互相抄袭行为，{\color{red}\textbf{抄袭和被抄袭双方的成绩都将被取消}}。因此请主动防止自己的作业被他人抄袭。
+	\end{enumerate}
+\end{tcolorbox}
+
+\section*{作业提交注意事项}
+\begin{tcolorbox}
+	\begin{enumerate}
+		\item[(1)] 请在LaTeX模板中{\color{red}\textbf{第一页填写个人的姓名、学号信息}}；
+		\item[(2)] 本次作业需提交该pdf文件、问题4可直接运行的源码，将以上几个文件压缩成zip文件后上传。zip文件格式为{\color{red}\textbf{学号.zip}}，例如170000001.zip；pdf文件格式为{\color{red}\textbf{学号\_姓名.pdf}}，例如170000001\_张三.pdf。
+		\item[(3)] 未按照要求提交作业，或提交作业格式不正确，将会{\color{red}\textbf{被扣除部分作业分数}}；
+		\item[(4)] 本次作业提交截止时间为{\color{red}\textbf{12月25日23:59:59}}。除非有特殊情况（如因病缓交），否则截止时间后不接收作业，本次作业记零分。
+	\end{enumerate}
+\end{tcolorbox}
+
+\newpage
+\section{[20pts] PAC Learning for Finite Hypothesis Sets}
+对于可分的有限假设空间，简单的~ERM~算法也可以导出~PAC~可学习性。请证明：
+
+令~$\mathcal{H}$~为可分的有限假设空间, $D$~为包含~$m$~个从~$\mathcal{D}$~独立同分布采样所得的样本构成的训练集, 学习算法~$\mathfrak{L}$~基于训练集~$D$~返回与训练集一致的假设~$h_D$, 对于任意~$c\in \mathcal{H}$, $0<\epsilon, \delta < 1$, 如果有~$m \geq \frac{1}{\epsilon}(\ln|\mathcal{H}|+\ln\frac{1}{\delta})$, 则
+\begin{equation}
+    P\left(E(h_D)\leq\epsilon\right)\geq 1-\delta,
+\end{equation}
+即$E(h)\leq\epsilon$~以至少~$1-\delta$~的概率成立.
+
+\noindent 提示：注意到~$h_D$~必然满足~$\widehat{E}_D(h_D) = 0$.
+
+\begin{solution}.\\
+令\begin{align*}
+	\mathcal{H}_{ERM}&=\arg\min_{h\in\mathcal{H}}\frac{1}{m}\sum_{i=1}^m I(h(x_i)\neq y_i)\\
+	\mathcal{H}'&=\{h\in\mathcal{H},E(h)>\epsilon\}
+\end{align*}
+注意到假设空间可分，所以也有$\mathcal{H}_{ERM}=\{h\in\mathcal{H},\hat{E}_D(h)=0\}$。对于$\mathcal{H}_{ERM}$中的假设，我们计算其泛化误差大于$\epsilon$的假设子集$\mathcal{H}_{ERM}'=\{h\in\mathcal{H},\hat{E}_D(h)=0,E(h)>\epsilon\}$，则有
+\begin{align*}
+	P(\mathcal{H}_{ERM}')&= P(\bigcup_{h\in\mathcal{H}'}\hat{E}_D(h)=0)\\
+	&\leq \sum_{h\in\mathcal{H}'}P(\hat{E}_D(h)=0)
+\end{align*}
+对于分布$D$上随机采样的任何样例$(x,y)$，有$P(h(x)=y)=1-P(h(x)\neq y)=1-E(h)\leq1-\epsilon$。因为D是从$\mathcal{D}$中独立同分布采样而来的，所以$P(\hat{E}_D(h)=0)=(1-P(h(x)\neq y))^m\leq (1-\epsilon)^m$。所以
+$$P(\mathcal{H}_{ERM}')=P(E(h_D)>\epsilon)\leq\sum_{h\in\mathcal{H}'}(1-\epsilon)^m=|\mathcal{H}'|(1-\epsilon)^m\leq|\mathcal{H}|(1-\epsilon)^m\leq|\mathcal{H}|e^{-\epsilon m}$$
+当$m \geq \frac{1}{\epsilon}(\ln|\mathcal{H}|+\ln\frac{1}{\delta})$时，则有
+$$P(E(h_D)>\epsilon)\leq \delta$$
+从而，$$P\left(E(h_D)\leq\epsilon\right)\geq 1-\delta$$
+\end{solution}
+
+\section{\textbf{[20pts]} semi-supervised learning}
+	多标记图半监督学习算法~\citep{conf/nips/ZhouBLWS03}的正则化框架如下(另见西瓜书p303)。见~\citep{timmurphy.org}
+
+\begin{equation}
+\mathcal{Q}(F)=\frac{1}{2}\left(\sum_{i, j=1}^{n} W_{i j}\left\Vert\frac{1}{\sqrt{d_{i}}} F_{i}-\frac{1}{\sqrt{d_{j}}} F_{j}\right\Vert^{2}\right)+\mu \sum_{i=1}^{n}\left\|F_{i}-Y_{i}\right\|^{2}
+\end{equation}
+\begin{enumerate}
+	\item  \textbf{[10pts]} 求正则化框架的最优解$F^*$。
+	\item  \textbf{[10pts]}试说明该正则化框架与书中p303页多分类标记传播算法之间的关系。
+\end{enumerate}
+
+\begin{solution}.
+\begin{enumerate}[$1.$]
+	\item 对于正则化框架的左侧容易得到：
+	\begin{align*}
+		\mathcal{Q}_{l}(F)&=\frac{1}{2}\left(\sum_{i, j=1}^{n} W_{i j}\left\Vert\frac{1}{\sqrt{d_{i}}} F_{i}-\frac{1}{\sqrt{d_{j}}} F_{j}\right\Vert^{2}\right)\\
+		&=\frac{1}{2}\sum_{i,j=1}^nW_{ij}\sum_{k=1}^{|\mathcal{Y}|} (\frac{1}{\sqrt{d_{i}}} F_{ik}-\frac{1}{\sqrt{d_{j}}} F_{jk})^2\\
+		&=\frac{1}{2}\sum_{k=1}^{|\mathcal{Y}|}(\sum_{i=1}^n\frac{\sum_{j=1}^nW_{ij}}{d_i}F_{ik}^2+\sum_{j=1}^n\frac{\sum_{i=1}^nW_{ij}}{d_j}F_{jk}^2-2\sum_{i,j=1}^n\frac{W_{ij}}{\sqrt{d_id_j}}F_{ik}F_{jk})
+	\end{align*}
+      定义$\mathbf{S}=\mathbf{D}^{-\frac{1}{2}}\mathbf{W}\mathbf{D}^{-\frac{1}{2}}$，$f_k$为$\mathbf{F}$的第$k$列，由于$d_i=\sum_{j=1}^{n}W_{ij}=\sum_{i=1}^n W_{ji}$，所以有
+      \begin{align*}
+      	\mathcal{Q}_{l}(F)
+      	&=\frac{1}{2}\sum_{k=1}^{|\mathcal{Y}|}(\sum_{i=1}^nF_{ik}^2+\sum_{j=1}^n F_{jk}^2-2\sum_{i,j=1}^n\frac{W_{ij}}{\sqrt{d_id_j}}F_{ik}F_{jk})\\
+      	&=\sum_{k=1}^{|\mathcal{Y}|}(\sum_{i=1}^nF_{ik}^2-\sum_{i,j=1}^n\frac{W_{ij}}{\sqrt{d_id_j}}F_{ik}F_{jk})\\
+      	&=\sum_{k=1}^{|\mathcal{Y}|}(f_k^T\mathbf{I}f_k-f_k^T\mathbf{S}f_k)\\
+      	&=tr(\mathbf{F}^T(\mathbf{I}-\mathbf{S})F)
+      \end{align*}
+       对于正则化框架的右侧容易得到：
+       \begin{align*}
+       	\mathcal{Q}_{r}(F)&=\mu\sum_{i=1}^{n}\left\|F_{i}-Y_{i}\right\|^{2}\\
+       	&=\mu\sum_{i,j=1}^{n}(F_{ij}-Y_{ij})^{2}\\
+       	&=\mu\left\|\mathbf{F}-\mathbf{Y}\right\|^{2}_{F}\\
+       	&=tr(\mu(\mathbf{F}-\mathbf{Y})^T(\mathbf{F}-\mathbf{Y}))
+       \end{align*}
+   所以$$\mathcal{Q}(\mathbf{F})=tr(\mathbf{F}^T(\mathbf{I}-\mathbf{S})F+\mu(\mathbf{F}-\mathbf{Y})^T(\mathbf{F}-\mathbf{Y}))$$
+   对其求导可得$$\frac{\partial\mathcal{Q}(\mathbf{F})}{\partial \mathbf{F}}=2(\mathbf{I}-\mathbf{S})\mathbf{F}+2\mu(\mathbf{F}-\mathbf{Y})$$
+   令导数为$\mathbf{0}$，从而 $$\mathbf{F}^*=(1-\frac{1}{1+\mu})(\mathbf{I}-\frac{1}{1+\mu}\mathbf{S})\mathbf{Y}$$
+	\item 容易看出，当$\mu=\frac{1}{1+\alpha}$时，多分类标记传播算法就是该正则化框架的迭代解，通过构造迭代式$\mathbf{F}(t+1)=\alpha\mathbf{S}\mathbf{F}(t)+(1-\alpha)\mathbf{Y}$来迭代地求解该正则化框架的最优解。折中参数$\alpha$越大，则迭代过程中结果偏离初始化项$\mathbf{Y}$越大，对应的正则化参数$\mu$越小，即限制$\sum_{i=1}^{n}\left\|F_{i}-Y_{i}\right\|^{2}$更宽松，$\mathbf{F}$更偏离$\mathbf{Y}$。
+\end{enumerate}
+\end{solution}
+
+
+
+\section{\textbf{[30pts]} Mixture Models}
+一个由K个组分(component)构成的多维高斯混合模型的概率密度函数如下:
+\begin{equation}
+    p\left(\boldsymbol{x}\right) = \sum_{k=1}^{K} P\left(z=k\right) p\left(\boldsymbol{x}|\boldsymbol{\mu}_k,\boldsymbol{\Sigma}_k\right)
+\end{equation}
+其中$z$是隐变量，$P(z)$表示K维离散分布，其参数为$\boldsymbol{\pi}$，即$p\left(z=k\right) = \pi_k$。$p\left(\boldsymbol{x}|\boldsymbol{\mu}_k,\boldsymbol{\Sigma}_k\right)$表示参数为$\boldsymbol{\mu}_k,\boldsymbol{\Sigma}_k$的多维高斯分布。
+\begin{enumerate}
+    \item  \textbf{[10pts]} 请使用盘式记法表示高斯混合模型。
+    \item \textbf{[10pts]} 考虑高斯混合模型的一个具体的情形，其中各个分量的协方差矩阵$\boldsymbol{\Sigma}_k$全部被
+限制为一个共同的值$\boldsymbol{\Sigma}$。求EM算法下参数$\pi_k,\boldsymbol{\mu}_k,\boldsymbol{\Sigma}$的更新公式。
+\item \textbf{[10pts]} 考虑一个由下面的混合概率分布给出的概率密度模型:
+\begin{equation}
+    p\left(\boldsymbol{x}\right) = \sum_{k=1}^{K} \pi_k p\left(\boldsymbol{x}| k\right)
+\end{equation}
+并且假设我们将$\boldsymbol{x}$划分为两部分，即$\boldsymbol{x} = \left(\boldsymbol{x}_a,\boldsymbol{x}_b\right)$。证明条件概率分布$p\left(\boldsymbol{x}_a|\boldsymbol{x}_b\right)$本身是一个混合概率分布。求混合系数以及分量概率密度的表达式。(注意此题没有规定$p\left(\boldsymbol{x}|k\right)$的具体形式)
+\end{enumerate}
+\begin{figure}[!htb]
+		\centering
+		\includegraphics[width=0.4\textwidth]{plate.png}
+		\caption{盘式计法}
+		\label{fig:1}
+\end{figure}
+\begin{solution}.
+\begin{enumerate}[$1.$]
+	\item 见图\ref{fig:1}。
+	\item 在E步，已知参数$\boldsymbol{\mu}_k,\boldsymbol{\Sigma}_k$推断隐变量分布，首先定义：
+	    \begin{align*}
+		w_k^i:&= p(z=k|\boldsymbol{x}_i)\\&=\frac{p(\boldsymbol{x}_i|z=k)p(z=k)}{p(\boldsymbol{x}_i)}\\
+			&=\frac{p(\boldsymbol{x}_i|\boldsymbol{\mu}_k,\boldsymbol{\Sigma})\boldsymbol{\pi}_k}{\sum_{k=1}^{K}\boldsymbol{\pi}_kp(\boldsymbol{x}_i|\boldsymbol{\mu}_k,\boldsymbol{\Sigma})}
+		\end{align*}
+	   然后写出似然函数：
+	   \begin{align*}
+	   	L(\boldsymbol{X})&=\sum_{i=1}^{N}\ln p(\boldsymbol{x}_i,z|\boldsymbol{\mu}_k,\boldsymbol{\Sigma})\\
+	   	&=\sum_{i=1}^{N}\ln\sum_{k=1}^{K}p(\boldsymbol{x}_i|z=k,\boldsymbol{\mu}_k,\boldsymbol{\Sigma})p(z=k)\\
+	   	&=\sum_{i=1}^{N}\ln\sum_{k=1}^{K}p(z=k|\boldsymbol{x}_i,\boldsymbol{\mu}_k,\boldsymbol{\Sigma})\frac{p(\boldsymbol{x}_i|z=k,\boldsymbol{\mu}_k,\boldsymbol{\Sigma})p(z=k)}{p(z=k|\boldsymbol{x}_i,\boldsymbol{\mu}_k,\boldsymbol{\Sigma})}
+	   \end{align*}
+       由Jensen不等式容易得到
+       \begin{align*}
+       	L(\boldsymbol{X})&\geq \sum_{i=1}^{N}\sum_{k=1}^{K}p(z=k|\boldsymbol{x}_i,\boldsymbol{\mu}_k,\boldsymbol{\Sigma})\ln\frac{p(\boldsymbol{x}_i|z=k,\boldsymbol{\mu}_k,\boldsymbol{\Sigma})p(z=k)}{p(z=k|\boldsymbol{x}_i,\boldsymbol{\mu}_k,\boldsymbol{\Sigma})}\\
+       	&=\sum_{i=1}^{N}\sum_{k=1}^{K}w_k^i\ln\frac{\frac{1}{\sqrt{(2\pi)^d|\boldsymbol{\Sigma}|}}\exp(-\frac{1}{2}(\boldsymbol{x_i}-\boldsymbol{\mu}_k)^T\boldsymbol{\Sigma}^{-1}(\boldsymbol{x_i}-\boldsymbol{\mu}_k))\boldsymbol{\pi}_k}{w_k^i}
+       \end{align*}
+       不等号右边即是$\mathcal{Q}(\boldsymbol{\pi}_k,\boldsymbol{\mu}_k,\boldsymbol{\Sigma})$，最大化$\mathcal{Q}(\boldsymbol{\pi}_k,\boldsymbol{\mu}_k,\boldsymbol{\Sigma})$即最大化$L(\boldsymbol{X})$。\\
+       在M步，最大化$\mathcal{Q}(\boldsymbol{\pi}_k,\boldsymbol{\mu}_k,\boldsymbol{\Sigma})$：
+       \begin{align*}
+       	\frac{\partial \mathcal{Q}}{\partial\boldsymbol{\mu}_k}&=\sum_{i=1}^{N}w_k^i\frac{\partial(-\frac{1}{2}(\boldsymbol{x_i}-\boldsymbol{\mu}_k)^T\boldsymbol{\Sigma}^{-1}(\boldsymbol{x_i}-\boldsymbol{\mu}_k))}{\partial\boldsymbol{\mu}_k}\\
+       	&=\sum_{i=1}^{N}w_k^i\boldsymbol{\Sigma}^{-1}(\boldsymbol{x_i}-\boldsymbol{\mu}_k)\\&=0\\
+       	\frac{\partial \mathcal{Q}}{\partial\boldsymbol{\Sigma}}&=-\frac{1}{2}\sum_{i=1}^{N}\sum_{k=1}^Kw_k^i[\frac{\partial((\boldsymbol{x_i}-\boldsymbol{\mu}_k)^T\boldsymbol{\Sigma}^{-1}(\boldsymbol{x_i}-\boldsymbol{\mu}_k))}{\partial\boldsymbol{\Sigma}}+\frac{\partial\ln |\boldsymbol{\Sigma}|}{\partial\boldsymbol{\Sigma}}]\\
+       	&=-\frac{1}{2}\sum_{i=1}^{N}\sum_{k=1}^Kw_k^i[{-\boldsymbol{\Sigma}^{-1}}^T(\boldsymbol{x_i}-\boldsymbol{\mu}_k)(\boldsymbol{x_i}-\boldsymbol{\mu}_k)^T{\boldsymbol{\Sigma}^{-1}}^T+{\boldsymbol{\Sigma}^{-1}}^T]\\
+       	&=0
+       \end{align*}
+       所以$$\boldsymbol{\mu}_k=\frac{\sum_{i=1}^{N}w_k^i\boldsymbol{x_i}}{\sum_{i=1}^{N}w_k^i}$$
+       \begin{align*}
+       	 \boldsymbol{\Sigma}&=\frac{\sum_{i=1}^{N}\sum_{k=1}^{K}w_k^i(\boldsymbol{x_i}-\boldsymbol{\mu}_k)(\boldsymbol{x_i}-\boldsymbol{\mu}_k)^T}{\sum_{i=1}^{N}\sum_{k=1}^{K}w_k^i}
+       \end{align*}
+       $\boldsymbol{\pi}_k$还需满足$\sum_{k=1}^{K}\boldsymbol{\pi}_k=1$，所以加上拉格郎日项：$$\mathcal{Q}':=\mathcal{Q}+\lambda(\sum_{k=1}^{K}\boldsymbol{\pi}_k-1)$$求导得：
+       \begin{align*}
+       	\frac{\partial \mathcal{Q}'}{\partial\boldsymbol{\pi}_k}&=\sum_{i=1}^{N}w_k^i\frac{1}{\boldsymbol{\pi}_k}+\lambda
+       	=0\\
+       	\frac{\partial \mathcal{Q}'}{\partial\lambda}&=\sum_{k=1}^{K}\boldsymbol{\pi}_k-1=0
+       \end{align*}
+       得到$\boldsymbol{\pi}_k=-\frac{\sum_{i=1}^{N}w_k^i}{\lambda}$，又有$1=\sum_{k=1}^{K}\boldsymbol{\pi}_k=-\frac{\sum_{i=1}^{N}\sum_{k=1}^{K}w_k^i}{\lambda}-\frac{N}{\lambda}$
+       ，所以$$\lambda=-N,\boldsymbol{\pi}_k=\frac{\sum_{i=1}^{N}w_k^i}{N}$$
+       以上部分参考自~\citep{timmurphy.org}。
+	\item 由贝叶斯定理和全概率公式易知：
+       \begin{align*}
+       	p(\boldsymbol{x}_a|\boldsymbol{x}_b)&=\frac{p(\boldsymbol{x}_a,\boldsymbol{x}_b)}{p(\boldsymbol{x}_b)}\\
+       	&=\frac{p(\boldsymbol{x}_a,\boldsymbol{x}_b)}{\int p(\boldsymbol{x}_a,\boldsymbol{x}_b)d\boldsymbol{x}_a}\\
+       	&=\frac{\sum_{k=1}^{K}\pi_kp(\boldsymbol{x}_a,\boldsymbol{x}_b|k)}{\int \sum_{k=1}^{K}\pi_kp(\boldsymbol{x}_a,\boldsymbol{x}_b|k)d\boldsymbol{x}_a}\\
+       	&=\frac{\sum_{k=1}^{K}\pi_kp(\boldsymbol{x}_a,\boldsymbol{x}_b|k)}{\sum_{k=1}^{K}\pi_k\int p(\boldsymbol{x}_a,\boldsymbol{x}_b|k)d\boldsymbol{x}_a}
+       \end{align*}
+   给定$\boldsymbol{x}_b$时，$\int p(\boldsymbol{x}_a,\boldsymbol{x}_b|k)d\boldsymbol{x}_a$为定值，因此分母也为定值，又因为$\sum_{k=1}^K\pi_k=1$，从而分布
+   \begin{align*}
+   	 p(\boldsymbol{x}_a|\boldsymbol{x}_b)&=\sum_{k=1}^{K}\pi_k \frac{p(\boldsymbol{x}_a,\boldsymbol{x}_b|k)}{\sum_{k=1}^{K}\pi_k\int p(\boldsymbol{x}_a,\boldsymbol{x}_b|k)d\boldsymbol{x}_a}
+   \end{align*}
+   为混合概率分布，其第$k$个混合系数为$\pi_k$，对应的分量概率密度为$\frac{p(\boldsymbol{x}_a,\boldsymbol{x}_b|k)}{\sum_{k=1}^{K}\pi_k\int p(\boldsymbol{x}_a,\boldsymbol{x}_b|k)d\boldsymbol{x}_a}$。
+\end{enumerate}
+\end{solution}
+
+\section{\textbf{[30pts]}Latent Dirichlet Allocation}
+我们提供了一个包含$8888$条新闻的数据集\texttt{news.txt.zip}，该数据集中每一行是一条新闻。在该数据集上完成LDA模型的使用及实现。
+
+数据预处理提示：你可能需要完成分词及去掉一些停用词等预处理工作。
+
+在本题中需要完成:
+\begin{enumerate}
+    \item \textbf{[10pts]}使用开源的LDA库（如scikit-learn），计算给出$K=\{5, 10, 20\}$个话题时，每个话题下概率最大的10个词及其概率。
+    \item \textbf{[20pts]}不借助开源库，手动实现LDA模型，计算给出$K=\{5, 10, 20\}$个话题时，每个话题下概率最大的10个词及其概率。
+\end{enumerate}
+注：需要在报告中描述模型计算的结果，以及如何复现自己的结果，提交的作业中至少应该包含\texttt{lda\_use.py}和\texttt{lda.py}两个文件，分别为使用和不使用第三方库的源码。
+\begin{solution}我的所有代码均在manjaro系统中实现，使用的python版本为python3.8。
+	\begin{enumerate}
+		\item 我使用开源的sklearn的LDA模型，其实现位于lda\_use.py中，可选命令行参数有topic\_nums，max\_iter\_nums等。命令行输入$\textbf{python lda\_use.py ---topic\_nums 5}$可运行并获得$5$个话题下概率最大的$10$个词及其概率，结果保存在./assets/下。最终我迭代了$1000$次，结果文件为$\textbf{./assets/results\_use\_topick\_iter1000.txt(k=5,10,20)}$。
+		\item 由于数据预处理需要较长时间，我将预处理的模型保存在./assets/lda.b中，命令行参数load默认为True，会加载该模型；否则会重新处理数据。可选命令行参数有topic\_nums，alpha，beta，max\_iter\_nums等。命令行输入$\textbf{python lda.py ---topic\_nums 5}$可运行并获得$5$个话题下概率最大的$10$个词及其概率，保存在./assets/下。最终我迭代了$200$次，结果文件分别为$\textbf{./assets/results\_topick\_iter200.txt(k=5,10,20)}$。
+	\end{enumerate}
+    由于结果数量太多，不方便写在tex文件中，因此请查看./assets/下的结果文件。由于模型复杂度高，运行时间长，可以减小迭代次数以快速验证模型。
+\end{solution}
+\newpage
+\bibliography{ref}
+\bibliographystyle{abbrvnat}
+\end{document}
