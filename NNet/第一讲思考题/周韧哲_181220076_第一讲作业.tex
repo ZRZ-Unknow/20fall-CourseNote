@@ -1,0 +1,104 @@
+%!TEX program = xelatex
+\documentclass[a4paper,UTF8]{article}
+\usepackage{ctex}
+\usepackage[margin=1.25in]{geometry}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{epsfig}
+\usepackage{color}
+\usepackage{mdframed}
+\usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage{float}
+\newmdtheoremenv{thm-box}{Theorem}
+\newmdtheoremenv{prop-box}{Proposition}
+\newmdtheoremenv{def-box}{定义}
+
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+	numbers=left,
+	numberstyle= \tiny,
+	keywordstyle= \color{ blue!70},
+	commentstyle= \color{red!50!green!50!blue!50},
+	frame=shadowbox, % 阴影效果
+	rulesepcolor= \color{ red!20!green!20!blue!20} ,
+	escapeinside=``, % 英文分号中可写入中文
+	xleftmargin=2em,xrightmargin=2em, aboveskip=1em,
+	framexleftmargin=2em
+}
+
+\usepackage{booktabs}
+
+\setlength{\evensidemargin}{.25in}
+\setlength{\textwidth}{6in}
+\setlength{\topmargin}{-0.5in}
+\setlength{\topmargin}{-0.5in}
+% \setlength{\textheight}{9.5in}
+%%%%%%%%%%%%%%%%%%此处用于设置页眉页脚%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{layout}
+\footskip = 12pt
+\pagestyle{fancy}                    % 设置页眉
+\lhead{2020年秋季}
+\chead{神经网络}
+% \rhead{第\thepage/\pageref{LastPage}页}
+\rhead{作业一}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{1pt}  			%页眉线宽，设为0可以去页眉线
+\setlength{\skip\footins}{0.5cm}    			%脚注与正文的距离
+\renewcommand{\footrulewidth}{0pt}  			%页脚线宽，设为0可以去页脚线
+
+\makeatletter 									%设置双线页眉
+\def\headrule{{\if@fancyplain\let\headrulewidth\plainheadrulewidth\fi%
+\hrule\@height 1.0pt \@width\headwidth\vskip1pt	%上面线为1pt粗
+\hrule\@height 0.5pt\@width\headwidth  			%下面0.5pt粗
+\vskip-2\headrulewidth\vskip-1pt}      			%两条线的距离1pt
+ \vspace{6mm}}     								%双线与下面正文之间的垂直间距
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\numberwithin{equation}{section}
+%\usepackage[thmmarks, amsmath, thref]{ntheorem}
+\newtheorem{theorem}{Theorem}
+\newtheorem*{definition}{Definition}
+\newtheorem*{solution}{Solution}
+\newtheorem*{prove}{Proof}
+\newcommand{\indep}{\rotatebox[origin=c]{90}{$\models$}}
+
+\usepackage{multirow}
+
+%--
+
+%--
+\begin{document}
+\title{神经网络\\
+第一讲思考题}
+\author{181220076, 周韧哲, zhourz@smail.nju.edu.cn}
+\maketitle
+
+\section*{Problem 1}\begin{enumerate}
+	\item 我们能够不研究大脑直接研究心智如何工作吗?
+	\item 你认为将来可能怎样研究大脑?对大脑的研究能促进神经网络的研究吗?对神经网络的研究能帮助人们更好地发现大脑的奥秘吗?
+\end{enumerate}
+\begin{solution}.\begin{enumerate}
+		\item 我认为不能不研究大脑就直接研究心智如何工作。因为我们的心智的产生以及其运作都是在大脑中进行的，不研究大脑就没有办法研究出心智的产生机理，无法得知其具体的产生过程以及后续影响过程，跳过大脑直接研究心智可能只能获得一些浅显的表象结论或者是错误的结论。
+		\item 将来研究大脑可以是从生物层面,生物技术的发展、检测技术的进步能够观察到大脑更细节的活动；随着心理学的发展,对于心智更为成熟的认识会给大脑的研究带来启发。神经网络的发展也能对大脑进行建模从而来研究大脑。\\
+		对大脑的研究显然能促进神经网络的研究,神经网络最早就是受大脑中处理信息过程的启发而设计出来的，虽然后来神经网络的发展已经和大脑的关系差异甚大，但是进一步研究大脑,可以启发我
+		们设计更为有效的神经网络,促进对神经网络的研究。\\
+		同时，对神经网络的研究也能帮助人们更好地发现大脑的奥秘，研究神经网络与研究大脑是相辅相成的,它们能够相互促进对方的研究。随着研究深入我们对大脑的理解更加全面，可以帮助我们更好的对大脑进行建模，当神经网络的能力足够强大，能够很好地模拟大脑时，那么对于神经网络的研究自然够帮助人们更好地发现大脑的奥秘。
+		
+		
+		
+		
+	\end{enumerate}
+\end{solution}
+
+\end{document}

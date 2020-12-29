@@ -1,0 +1,98 @@
+%!TEX program = xelatex
+\documentclass[a4paper,UTF8]{article}
+\usepackage{ctex}
+\usepackage[margin=1.25in]{geometry}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{epsfig}
+\usepackage{color}
+\usepackage{mdframed}
+\usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage{float}
+\newmdtheoremenv{thm-box}{Theorem}
+\newmdtheoremenv{prop-box}{Proposition}
+\newmdtheoremenv{def-box}{定义}
+
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+	numbers=left,
+	numberstyle= \tiny,
+	keywordstyle= \color{ blue!70},
+	commentstyle= \color{red!50!green!50!blue!50},
+	frame=shadowbox, % 阴影效果
+	rulesepcolor= \color{ red!20!green!20!blue!20} ,
+	escapeinside=``, % 英文分号中可写入中文
+	xleftmargin=2em,xrightmargin=2em, aboveskip=1em,
+	framexleftmargin=2em
+}
+
+\usepackage{booktabs}
+
+\setlength{\evensidemargin}{.25in}
+\setlength{\textwidth}{6in}
+\setlength{\topmargin}{-0.5in}
+\setlength{\topmargin}{-0.5in}
+% \setlength{\textheight}{9.5in}
+%%%%%%%%%%%%%%%%%%此处用于设置页眉页脚%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{layout}
+\footskip = 12pt
+\pagestyle{fancy}                    % 设置页眉
+\lhead{2020年秋季}
+\chead{神经网络}
+% \rhead{第\thepage/\pageref{LastPage}页}
+\rhead{作业一}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{1pt}  			%页眉线宽，设为0可以去页眉线
+\setlength{\skip\footins}{0.5cm}    			%脚注与正文的距离
+\renewcommand{\footrulewidth}{0pt}  			%页脚线宽，设为0可以去页脚线
+
+\makeatletter 									%设置双线页眉
+\def\headrule{{\if@fancyplain\let\headrulewidth\plainheadrulewidth\fi%
+\hrule\@height 1.0pt \@width\headwidth\vskip1pt	%上面线为1pt粗
+\hrule\@height 0.5pt\@width\headwidth  			%下面0.5pt粗
+\vskip-2\headrulewidth\vskip-1pt}      			%两条线的距离1pt
+ \vspace{6mm}}     								%双线与下面正文之间的垂直间距
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\numberwithin{equation}{section}
+%\usepackage[thmmarks, amsmath, thref]{ntheorem}
+\newtheorem{theorem}{Theorem}
+\newtheorem*{definition}{Definition}
+\newtheorem*{solution}{Solution}
+\newtheorem*{prove}{Proof}
+\newcommand{\indep}{\rotatebox[origin=c]{90}{$\models$}}
+
+\usepackage{multirow}
+
+%--
+
+%--
+\begin{document}
+\title{神经网络\\
+作业六}
+\author{181220076, 周韧哲, zhourz@smail.nju.edu.cn}
+\maketitle
+
+\section*{Problem 1}
+网络如下图所示，激活函数为符号函数，在$t_0$时刻a,b,c的输出分别是$1,-1,-1$，采用异步方式分别更新a,b,c的输出，请计算三次更新完成后三个神经元的输出。
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.25\textwidth]{pic/1.png}
+	\label{fig:1}
+\end{figure}
+\begin{solution}
+	第一次随机选取到神经元b，计算其输出为$sgn(2.3\times1-0.4\times1)=1$。第二次随机选取到a，其输出为$sgn(2.3\times1-3.5\times(-1))=1$不变。第三次随机选取到c，其输出为$sgn(-3.5\times1+0.4\times1)=-1$不变。因此三次更新完成后a,b,c的输出分别是$1,1,-1$。
+\end{solution}
+
+\end{document}

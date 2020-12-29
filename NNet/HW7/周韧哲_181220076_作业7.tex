@@ -1,0 +1,97 @@
+%!TEX program = xelatex
+\documentclass[a4paper,UTF8]{article}
+\usepackage{ctex}
+\usepackage[margin=1.25in]{geometry}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{epsfig}
+\usepackage{color}
+\usepackage{mdframed}
+\usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage{float}
+\newmdtheoremenv{thm-box}{Theorem}
+\newmdtheoremenv{prop-box}{Proposition}
+\newmdtheoremenv{def-box}{定义}
+
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+	numbers=left,
+	numberstyle= \tiny,
+	keywordstyle= \color{ blue!70},
+	commentstyle= \color{red!50!green!50!blue!50},
+	frame=shadowbox, % 阴影效果
+	rulesepcolor= \color{ red!20!green!20!blue!20} ,
+	escapeinside=``, % 英文分号中可写入中文
+	xleftmargin=2em,xrightmargin=2em, aboveskip=1em,
+	framexleftmargin=2em
+}
+
+\usepackage{booktabs}
+
+\setlength{\evensidemargin}{.25in}
+\setlength{\textwidth}{6in}
+\setlength{\topmargin}{-0.5in}
+\setlength{\topmargin}{-0.5in}
+% \setlength{\textheight}{9.5in}
+%%%%%%%%%%%%%%%%%%此处用于设置页眉页脚%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{layout}
+\footskip = 12pt
+\pagestyle{fancy}                    % 设置页眉
+\lhead{2020年秋季}
+\chead{神经网络}
+% \rhead{第\thepage/\pageref{LastPage}页}
+\rhead{作业一}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{1pt}  			%页眉线宽，设为0可以去页眉线
+\setlength{\skip\footins}{0.5cm}    			%脚注与正文的距离
+\renewcommand{\footrulewidth}{0pt}  			%页脚线宽，设为0可以去页脚线
+
+\makeatletter 									%设置双线页眉
+\def\headrule{{\if@fancyplain\let\headrulewidth\plainheadrulewidth\fi%
+\hrule\@height 1.0pt \@width\headwidth\vskip1pt	%上面线为1pt粗
+\hrule\@height 0.5pt\@width\headwidth  			%下面0.5pt粗
+\vskip-2\headrulewidth\vskip-1pt}      			%两条线的距离1pt
+ \vspace{6mm}}     								%双线与下面正文之间的垂直间距
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\numberwithin{equation}{section}
+%\usepackage[thmmarks, amsmath, thref]{ntheorem}
+\newtheorem{theorem}{Theorem}
+\newtheorem*{definition}{Definition}
+\newtheorem*{solution}{Solution}
+\newtheorem*{prove}{Proof}
+\newcommand{\indep}{\rotatebox[origin=c]{90}{$\models$}}
+
+\usepackage{multirow}
+
+%--
+
+%--
+\begin{document}
+\title{神经网络\\
+作业七}
+\author{181220076, 周韧哲, zhourz@smail.nju.edu.cn}
+\maketitle
+
+\section*{Problem 1}
+计算模拟退火过程。\\\\
+$\textbf{Solution.}$
+命令行键入$\textbf{python SimulatedAnnealing.py}$可复现结果。优化过程中$Obj,x_1,x_2$的变化情况如图\ref{Fig.1}所示。函数的最小值为$0$,对应的$x_1=0,x_2=0$。由图可知，优化过程中越来越靠近最优点，且随着温度的降低，变化幅度也越来越小。训练过程和课件中所写的一样，详情请见文件$\textbf{SimulatedAnnealing.py}$。
+\begin{figure}[h] 
+	\centering
+	\includegraphics[width=1\textwidth]{pic/fig1.png} 
+	\caption{变化情况} 
+	\label{Fig.1}
+\end{figure}
+\end{document}
